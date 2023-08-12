@@ -1,11 +1,6 @@
-// Define the maximum limits
-export const MAX_HEADER_COUNT = 63;
-export const MAX_HEADER_SIZE = 1023;
-export const MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
+import * as ENUM from "./utils/enum";
 
 export class BinaryMessageEncoder {
-    static MAX_HEADER_COUNT: number;
-    static MAX_PAYLOAD_SIZE: number;
     // Helper function to concatenate Uint8Arrays
     private static concatUint8Arrays(arrays: Uint8Array[]): Uint8Array {
         const totalLength = arrays.reduce((acc, arr) => acc + arr.byteLength, 0);
@@ -29,15 +24,15 @@ export class BinaryMessageEncoder {
 
     static encodeMessage(headers: Map<string, string>, payload: string): Uint8Array {
         //Maximum headers 63
-        const headerCount = Math.min(headers.size, MAX_HEADER_COUNT);
-        if (headers.size > MAX_HEADER_COUNT) {
-            throw new Error("A message can only have a maximum of 63 headers.");
+        const headerCount = Math.min(headers.size, ENUM.MAX_HEADER_COUNT);
+        if (headers.size > ENUM.MAX_HEADER_COUNT) {
+            throw new Error(ENUM.MESSAGE_HEADER_AMOUNT);
         }
         const headerData: Uint8Array[] = [];
 
         headers.forEach((value, name) => {
-            if (name.length > MAX_HEADER_SIZE || value.length > MAX_HEADER_SIZE) {
-                throw new Error("Header names and values must be limited to 1023 bytes each.");
+            if (name.length > ENUM.MAX_HEADER_SIZE || value.length > ENUM.MAX_HEADER_SIZE) {
+                throw new Error(ENUM.MESSAGE_HEADER_SIZE);
             }
             const nameBytes = BinaryMessageEncoder.stringToBytes(name);
             const valueBytes = BinaryMessageEncoder.stringToBytes(value);
@@ -59,8 +54,8 @@ export class BinaryMessageEncoder {
 
         const payloadBytes = BinaryMessageEncoder.stringToBytes(payload);
 
-        if (payloadBytes.length > MAX_PAYLOAD_SIZE) {
-            throw new Error("Payload size exceeds the limit of 256 KiB.");
+        if (payloadBytes.length > ENUM.MAX_PAYLOAD_SIZE) {
+            throw new Error(ENUM.MESSAGE_PAYLOAD_SIZE);
         }
 
         const payloadLength = new Uint32Array([payloadBytes.byteLength]);

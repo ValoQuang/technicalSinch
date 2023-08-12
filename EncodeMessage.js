@@ -1,10 +1,30 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BinaryMessageEncoder = exports.MAX_PAYLOAD_SIZE = exports.MAX_HEADER_SIZE = exports.MAX_HEADER_COUNT = void 0;
-// Define the maximum limits
-exports.MAX_HEADER_COUNT = 63;
-exports.MAX_HEADER_SIZE = 1023;
-exports.MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
+exports.BinaryMessageEncoder = void 0;
+const ENUM = __importStar(require("./utils/enum"));
 class BinaryMessageEncoder {
     // Helper function to concatenate Uint8Arrays
     static concatUint8Arrays(arrays) {
@@ -27,14 +47,14 @@ class BinaryMessageEncoder {
     }
     static encodeMessage(headers, payload) {
         //Maximum headers 63
-        const headerCount = Math.min(headers.size, exports.MAX_HEADER_COUNT);
-        if (headers.size > exports.MAX_HEADER_COUNT) {
-            throw new Error("A message can only have a maximum of 63 headers.");
+        const headerCount = Math.min(headers.size, ENUM.MAX_HEADER_COUNT);
+        if (headers.size > ENUM.MAX_HEADER_COUNT) {
+            throw new Error(ENUM.MESSAGE_HEADER_AMOUNT);
         }
         const headerData = [];
         headers.forEach((value, name) => {
-            if (name.length > exports.MAX_HEADER_SIZE || value.length > exports.MAX_HEADER_SIZE) {
-                throw new Error("Header names and values must be limited to 1023 bytes each.");
+            if (name.length > ENUM.MAX_HEADER_SIZE || value.length > ENUM.MAX_HEADER_SIZE) {
+                throw new Error(ENUM.MESSAGE_HEADER_SIZE);
             }
             const nameBytes = BinaryMessageEncoder.stringToBytes(name);
             const valueBytes = BinaryMessageEncoder.stringToBytes(value);
@@ -50,8 +70,8 @@ class BinaryMessageEncoder {
             offset += data.byteLength;
         }
         const payloadBytes = BinaryMessageEncoder.stringToBytes(payload);
-        if (payloadBytes.length > exports.MAX_PAYLOAD_SIZE) {
-            throw new Error("Payload size exceeds the limit of 256 KiB.");
+        if (payloadBytes.length > ENUM.MAX_PAYLOAD_SIZE) {
+            throw new Error(ENUM.MESSAGE_PAYLOAD_SIZE);
         }
         const payloadLength = new Uint32Array([payloadBytes.byteLength]);
         const payloadLengthBytes = new Uint8Array(payloadLength.buffer);
@@ -64,15 +84,4 @@ class BinaryMessageEncoder {
     }
 }
 exports.BinaryMessageEncoder = BinaryMessageEncoder;
-// Test
-const headers = new Map();
-headers.set("Content-Type", "application/json");
-headers.set("Authorization", "12345");
-const payload = 'Since candidate';
-try {
-    const encodedMessage = BinaryMessageEncoder.encodeMessage(headers, payload);
-    console.log("Encoded Message:", encodedMessage);
-}
-catch (error) {
-    console.error(error);
-}
+;
