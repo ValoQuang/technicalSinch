@@ -5,6 +5,19 @@ const MAX_HEADER_SIZE = 1023;
 const MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
 
 class BinaryMessageEncoder {
+
+    // Helper function to concatenate Uint8Arrays
+    private static concatUint8Arrays(arrays: Uint8Array[]): Uint8Array {
+        const totalLength = arrays.reduce((acc, arr) => acc + arr.byteLength, 0);
+        const result = new Uint8Array(totalLength);
+        let offset = 0;
+        for (const arr of arrays) {
+            result.set(arr, offset);
+            offset += arr.byteLength;
+        }
+        return result;
+    }
+
     static encodeMessage(headers: Map<string, string>, payload: string): Uint8Array {
         //maximum headers 63
         const headerCount = Math.min(headers.size, MAX_HEADER_COUNT);
@@ -26,8 +39,9 @@ class BinaryMessageEncoder {
             headerData.push(new Uint8Array(nameLength.buffer), nameBytes, new Uint8Array(valueLength.buffer), valueBytes);
         });
 
-        const headerByteLength = headerData.reduce((acc, curr) => acc + curr.byteLength, 0);
-        const headerBytes = new Uint8Array(headerByteLength);
+        // Combine header data into a single byte array
+        const headerBytes = BinaryMessageEncoder.concatUint8Arrays(headerData);
+
 
         let offset = 0;
         for (const data of headerData) {
@@ -60,6 +74,11 @@ headers.set("Content-Type", "application/json");
 headers.set("Authorization", "12345");
 
 const payload = 'I am Since candidata';
-const encodedMessage = BinaryMessageEncoder.encodeMessage(headers, payload);
-console.log("Encoded Message:", encodedMessage);
+
+try {
+    const encodedMessage = BinaryMessageEncoder.encodeMessage(headers, payload);
+    console.log("Encoded Message:", encodedMessage);
+} catch (error) {
+    console.error("Error:", error);
+}
 
