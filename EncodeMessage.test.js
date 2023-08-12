@@ -28,7 +28,7 @@ const ENUM = __importStar(require("./utils/enum"));
 const headers = new Map();
 headers.set("Content-Type", "application/json");
 headers.set("Authorization", "12345");
-const payload = "Since candidate";
+const payload = "Sinch candidate";
 //In accordance with the "Since candidate"
 const dummyResult = [
     2, 12, 0, 67, 111, 110, 116, 101, 110, 116, 45, 84, 121, 112, 101, 16, 0, 97,
