@@ -5,7 +5,7 @@ const headers = new Map<string, string>();
 headers.set("Content-Type", "application/json");
 headers.set("Authorization", "12345");
 const payload = "Since candidate";
-//In accordance with the "Since candidate"
+//Decimal value in accordance with string "Since candidate"
 const dummyResult = [
   2, 12, 0, 67, 111, 110, 116, 101, 110, 116, 45, 84, 121, 112, 101, 16, 0, 97,
   112, 112, 108, 105, 99, 97, 116, 105, 111, 110, 47, 106, 115, 111, 110, 13, 0,
