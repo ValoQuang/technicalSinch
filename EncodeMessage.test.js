@@ -29,12 +29,12 @@ const headers = new Map();
 headers.set("Content-Type", "application/json");
 headers.set("Authorization", "12345");
 const payload = "Sinch candidate";
-//In accordance with the "Since candidate"
+//Decimal value in accordance with string "Since candidate"
 const dummyResult = [
     2, 12, 0, 67, 111, 110, 116, 101, 110, 116, 45, 84, 121, 112, 101, 16, 0, 97,
     112, 112, 108, 105, 99, 97, 116, 105, 111, 110, 47, 106, 115, 111, 110, 13, 0,
     65, 117, 116, 104, 111, 114, 105, 122, 97, 116, 105, 111, 110, 5, 0, 49, 50,
-    51, 52, 53, 15, 0, 0, 0, 83, 105, 110, 99, 101, 32, 99, 97, 110, 100, 105,
+    51, 52, 53, 15, 0, 0, 0, 83, 105, 110, 99, 104, 32, 99, 97, 110, 100, 105,
     100, 97, 116, 101,
 ];
 describe("EncodeMessage", () => {
