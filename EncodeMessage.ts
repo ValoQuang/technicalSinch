@@ -59,8 +59,7 @@ const headers = new Map<string, string>();
 headers.set("Content-Type", "application/json");
 headers.set("Authorization", "12345");
 
-const payload = 'I am Truong';
-
+const payload = 'I am Since candidata';
 const encodedMessage = BinaryMessageEncoder.encodeMessage(headers, payload);
 console.log("Encoded Message:", encodedMessage);
 
