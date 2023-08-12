@@ -1,9 +1,11 @@
 // Define the maximum limits
-const MAX_HEADER_COUNT = 63;
-const MAX_HEADER_SIZE = 1023;
-const MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
+export const MAX_HEADER_COUNT = 63;
+export const MAX_HEADER_SIZE = 1023;
+export const MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
 
-class BinaryMessageEncoder {
+export class BinaryMessageEncoder {
+    static MAX_HEADER_COUNT: number;
+    static MAX_PAYLOAD_SIZE: number;
     // Helper function to concatenate Uint8Arrays
     private static concatUint8Arrays(arrays: Uint8Array[]): Uint8Array {
         const totalLength = arrays.reduce((acc, arr) => acc + arr.byteLength, 0);
@@ -49,7 +51,6 @@ class BinaryMessageEncoder {
         // Combine header data into a single byte array
         const headerBytes = BinaryMessageEncoder.concatUint8Arrays(headerData);
 
-
         let offset = 0;
         for (const data of headerData) {
             headerBytes.set(data, offset);
@@ -73,20 +74,4 @@ class BinaryMessageEncoder {
 
         return encodedMessage;
     }
-}
-
-// Test
-const headers = new Map<string, string>();
-headers.set("Content-Type", "application/json");
-headers.set("Authorization", "12345");
-
-const payload = 'Since candidate';
-
-try {
-    const encodedMessage = BinaryMessageEncoder.encodeMessage(headers, payload);
-    console.log(headers);
-    console.log("Encoded Message:", encodedMessage);
-} catch (error) {
-    console.error(error);
-}
-
+};
