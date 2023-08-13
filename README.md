@@ -33,7 +33,8 @@ Second part Payload:
    - Define encodedMessage
     ```
     const encodedMessage = new Uint8Array(1 + headerBytes.byteLength + payloadLengthBytes.byteLength + payloadBytes.byteLength);
-    ``` to allocate memory, to ensure we have enough space to store the message.
+    ```
+    to allocate memory, to ensure we have enough space to store the message.
    - Then set headerBytes starting at index 1, after the header count
     ```
     encodedMessage[0] = headerCount;
