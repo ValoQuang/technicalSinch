@@ -24,11 +24,11 @@ Then run
 npm test
 ```
 This should go through 5 tests:
-- The encodeMessage() works, the result matches dummy result.
-- Header names exceed to 1023 bytes =>> give warning
-- Header values exceed to 1023 bytes =>> give warning
-- A message headers exceed 63. =>> give warning
-- The message payload exceed to 256 KiB. =>> give warning
+- The encodeMessage(headers, payload) works, the result matches converted dummy result.
+- Header names exceed to 1023 bytes =>> give warning.
+- Header values exceed to 1023 bytes =>> give warning.
+- A message headers exceed 63 =>> give warning.
+- The message payload exceed to 256 KiB =>> give warning.
 
 # Summary
 The encode is logic is down to 2 main parts:
