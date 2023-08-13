@@ -1,5 +1,5 @@
 export const MAX_HEADER_COUNT = 63;
-export const MAX_HEADER_SIZE = 1023;
+export const MAX_HEADER_SIZE = 1023; //length
 export const MAX_PAYLOAD_SIZE = 256 * 1024; // 256 KiB
 
 export const MESSAGE_HEADER_AMOUNT = "A message can only have a maximum of 63 headers."

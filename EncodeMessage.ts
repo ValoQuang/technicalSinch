@@ -23,7 +23,7 @@ export class BinaryMessageEncoder {
     }
 
     static encodeMessage(headers: Map<string, string>, payload: string): Uint8Array {
-        //Maximum headers 63
+        //Headers
         const headerCount = Math.min(headers.size, ENUM.MAX_HEADER_COUNT);
         if (headers.size > ENUM.MAX_HEADER_COUNT) {
             throw new Error(ENUM.MESSAGE_HEADER_AMOUNT);
@@ -31,27 +31,21 @@ export class BinaryMessageEncoder {
         const headerData: Uint8Array[] = [];
 
         headers.forEach((value, name) => {
-            if (name.length > ENUM.MAX_HEADER_SIZE || value.length > ENUM.MAX_HEADER_SIZE) {
-                throw new Error(ENUM.MESSAGE_HEADER_SIZE);
-            }
             const nameBytes = BinaryMessageEncoder.stringToBytes(name);
             const valueBytes = BinaryMessageEncoder.stringToBytes(value);
 
             const nameLength = new Uint16Array([nameBytes.length]);
             const valueLength = new Uint16Array([valueBytes.length]);
+            if (nameBytes.length > ENUM.MAX_HEADER_SIZE || valueBytes.length > ENUM.MAX_HEADER_SIZE) {
+                throw new Error(ENUM.MESSAGE_HEADER_SIZE);
+            }
 
             headerData.push(new Uint8Array(nameLength.buffer), nameBytes, new Uint8Array(valueLength.buffer), valueBytes);
         });
-
         // Combine header data into a single byte array
         const headerBytes = BinaryMessageEncoder.concatUint8Arrays(headerData);
 
-        let offset = 0;
-        for (const data of headerData) {
-            headerBytes.set(data, offset);
-            offset += data.byteLength;
-        }
-
+        //Payload
         const payloadBytes = BinaryMessageEncoder.stringToBytes(payload);
 
         if (payloadBytes.length > ENUM.MAX_PAYLOAD_SIZE) {
