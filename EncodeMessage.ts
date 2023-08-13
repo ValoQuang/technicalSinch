@@ -64,3 +64,15 @@ export class BinaryMessageEncoder {
         return encodedMessage;
     }
 };
+
+//Test by compiling code.
+const headers = new Map<string, string>();
+headers.set("Content-Type", "application/json");
+headers.set("Authorization", "12345");
+const payload = "Hello";
+
+try {
+    console.log(BinaryMessageEncoder.encodeMessage(headers, payload));
+} catch(error) {
+    console.log(error);
+}

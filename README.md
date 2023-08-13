@@ -1,5 +1,4 @@
 # TechnicalSinch
-
 Implementation a simple binary message encoding scheme to be used in signaling protocol.
 A message contains Header { name, value } and Payload { string }. 
 
@@ -13,6 +12,23 @@ Conditions:
 Criteria:
 - Handling error if one of conditions is not met.
 - Clear code presentation.
+
+# Run the code
+Pull the repository.
+Run
+```
+npm install
+```
+Then run 
+```
+npm test
+```
+This should go through 5 tests:
+- The encodeMessage() works, the result matches dummy result.
+- Header names exceed to 1023 bytes =>> give warning
+- Header values exceed to 1023 bytes =>> give warning
+- A message headers exceed 63. =>> give warning
+- The message payload exceed to 256 KiB. =>> give warning
 
 # Summary
 The encode is logic is down to 2 main parts:
@@ -29,7 +45,7 @@ Second part Payload:
 2. Check if converted payload is met condition.
 3. Encode message with scheme.
    - Encode message is a new Uint8Array.
-   - First byte is reserved for the header count => "1+", this way to quickly count the number of headers.
+   - First byte is reserved for the header count => "1+", this way is to quickly count the number of headers.
    - Define encodedMessage
     ```
     const encodedMessage = new Uint8Array(1 + headerBytes.byteLength + payloadLengthBytes.byteLength + payloadBytes.byteLength);
